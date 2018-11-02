@@ -7,7 +7,7 @@ class basebox
 public:
 	basebox(const vec3D& position,const vec3D& size);
 	/**
-	 * \brief test whether this box is colliding another one.
+	 * \brief test whether this box is colliding with another one.
 	 * \param box the other one 
 	 * \return colliding=>true , not=>false
 	 */

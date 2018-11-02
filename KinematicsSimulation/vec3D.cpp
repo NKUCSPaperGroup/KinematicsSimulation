@@ -1,32 +1,37 @@
 #include "vec3D.h"
 
-vec3D::vec3D(const double x,const double y,const double z)
+vec3D::vec3D(const double x,const double y,const double z):x_(x),y_(y),z_(z)
 {
 }
 
-vec3D::vec3D(const vec3D & vec)
+vec3D::vec3D(const vec3D & vec):vec3D(vec.x_,vec.y_,vec.z_)
 {
 }
 
 double vec3D::length() const
 {
+	
 }
 
 vec3D vec3D::copy() const
 {
-	
+	return vec3D{ this->x(),this->y(),this->z() };
 }
 
 vec3D vec3D::unit() const
 {
+	return *this / this->length();
 }
 
-vec3D cross(const vec3D& a,const vec3D& b)
+
+vec3D vec3D::cross(const vec3D& b) const
 {
+	return cross(*this, b);
 }
 
-vec3D vec3D::cross(const vec3D& b)
+vec3D vec3D::cross(const vec3D& a, const vec3D& b)
 {
+
 }
 
 vec3D operator+(const vec3D& a, const vec3D& b)

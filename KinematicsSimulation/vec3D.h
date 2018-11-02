@@ -55,7 +55,7 @@ public:
 	 * \param b 
 	 * \return 
 	 */
-	vec3D cross(const vec3D& b);
+	vec3D cross(const vec3D& b) const;
 
 	/**
 	 * \brief cross product
@@ -63,7 +63,7 @@ public:
 	 * \param b 
 	 * \return 
 	 */
-	friend vec3D cross(const vec3D& a,const vec3D& b);
+	static vec3D cross(const vec3D& a,const vec3D& b);
  
 	friend bool operator==(const vec3D& lhs, const vec3D& rhs);
 
