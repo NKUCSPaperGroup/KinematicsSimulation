@@ -18,6 +18,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="basebox.h" />
+    <ClInclude Include="force.h" />
+    <ClInclude Include="vec3D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="basebox.cpp" />
+    <ClCompile Include="force.cpp" />
+    <ClCompile Include="vec3D.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{4519D261-9452-4F99-BA50-3D8648981012}</ProjectGuid>
@@ -114,8 +124,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -14,4 +14,26 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="vec3D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="force.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="basebox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="basebox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="force.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="vec3D.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
