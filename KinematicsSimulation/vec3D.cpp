@@ -10,7 +10,6 @@ vec3D::vec3D(const vec3D & vec):vec3D(vec.x_,vec.y_,vec.z_)
 
 double vec3D::length() const
 {
-	vec3D{ this->x(),this->y(),this->z() };
 	return sqrt(x() * x() + y() * y() + z() * z());
 }
 
