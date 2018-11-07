@@ -21,11 +21,16 @@
   <ItemGroup>
     <ClInclude Include="basebox.h" />
     <ClInclude Include="force.h" />
+    <ClInclude Include="massbody.h" />
+    <ClInclude Include="masscenter.h" />
+    <ClInclude Include="Octree.h" />
     <ClInclude Include="vec3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="basebox.cpp" />
     <ClCompile Include="force.cpp" />
+    <ClCompile Include="masscenter.cpp" />
+    <ClCompile Include="Octree.cpp" />
     <ClCompile Include="vec3D.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

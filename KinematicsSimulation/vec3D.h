@@ -5,9 +5,11 @@
 class vec3D
 {
 public:
-	vec3D():vec3D(0,0,0){}
-	
-	vec3D(double x,double y,double z);
+	vec3D(): vec3D(0, 0, 0)
+	{
+	}
+
+	vec3D(double x, double y, double z);
 
 	vec3D(const vec3D& vec);
 
@@ -27,9 +29,9 @@ public:
 	{
 		return z_;
 	}
-	
+
 	vec3D copy() const;
-	
+
 	vec3D unit() const;
 
 	friend vec3D operator+(const vec3D& a, const vec3D& b);
@@ -44,7 +46,7 @@ public:
 	 * \return a*b
 	 */
 	friend double operator*(const vec3D& a, const vec3D& b);
-	
+
 	friend vec3D operator*(const vec3D& a, double b);
 
 	friend vec3D operator/(const vec3D& a, double b);
@@ -63,8 +65,8 @@ public:
 	 * \param b 
 	 * \return 
 	 */
-	static vec3D cross(const vec3D& a,const vec3D& b);
- 
+	static vec3D cross(const vec3D& a, const vec3D& b);
+
 	friend bool operator==(const vec3D& lhs, const vec3D& rhs);
 
 	friend bool operator!=(const vec3D& lhs, const vec3D& rhs);

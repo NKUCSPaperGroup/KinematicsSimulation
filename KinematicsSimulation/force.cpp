@@ -1,10 +1,10 @@
 #include "force.h"
 
-force::force(const force_type type, const double x, const double y, const double z):vec3D(x,y,z),type_(type)
+force::force(const force_type type, const double x, const double y, const double z) : vec3D(x, y, z), type_(type)
 {
 }
 
-force::force(const force_type type, const vec3D& vec):vec3D(vec),type_(type)
+force::force(const force_type type, const vec3D& vec) : vec3D(vec), type_(type)
 {
 }
 
