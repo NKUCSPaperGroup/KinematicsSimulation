@@ -7,6 +7,11 @@
  */
 enum force_type
 {
+	gravity,
+	electro_static,
+	magnetic_static,
+	magnetic,
+	extra
 };
 
 /**
