@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basebox.h" />
+    <ClInclude Include="field.h" />
     <ClInclude Include="force.h" />
     <ClInclude Include="massbody.h" />
     <ClInclude Include="masscenter.h" />

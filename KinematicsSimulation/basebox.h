@@ -6,6 +6,8 @@
 
 class basebox
 {
+protected:
+	~basebox() = default;
 public:
 	basebox(const vec3D& position, const vec3D& size);
 	/**
