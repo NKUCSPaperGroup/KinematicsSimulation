@@ -24,6 +24,7 @@
     <ClInclude Include="force.h" />
     <ClInclude Include="massbody.h" />
     <ClInclude Include="masscenter.h" />
+    <ClInclude Include="octree.h" />
     <ClInclude Include="vec3D.h" />
   </ItemGroup>
   <ItemGroup>
