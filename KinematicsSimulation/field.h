@@ -11,10 +11,8 @@ public:
 	{
 	}
 
-protected:
-	~field() = default;
+	virtual ~field() = default;
 
-public:
 	virtual bool is_in_field(double time, masscenter obj) = 0;
 	virtual void add_force(double time, masscenter obj) = 0;
 };

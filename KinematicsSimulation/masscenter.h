@@ -24,13 +24,19 @@ public:
 
 	void calculate_acceleration();
 
-	void move(double dt);
+	virtual void move(double dt);
 
 	void clear_force();
 
 	static void add_gravity_to(masscenter& obj, double other_mass);
 
 	static void add_electrostatic_force_to(masscenter& obj, double other_q);
+
+
+	std::list<force> forces() const
+	{
+		return forces_;
+	}
 
 private:
 	double q_;
@@ -66,4 +72,19 @@ public:
 	friend bool operator!=(const masscenter& lhs, const masscenter& rhs);
 
 	friend std::size_t hash_value(const masscenter& obj);
+
+};
+
+
+class masscenter_save
+{
+public:
+	masscenter_save(masscenter& o)
+		:position(o.position()), size(o.size()), v(o.velosity()), foces(o.forces())
+	{
+	}
+	vec3D position;
+	vec3D size;
+	vec3D v;
+	std::list<force> foces;
 };

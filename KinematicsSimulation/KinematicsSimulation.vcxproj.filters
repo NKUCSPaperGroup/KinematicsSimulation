@@ -36,6 +36,12 @@
     <ClInclude Include="octree.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="physics_sence.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tracker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="basebox.cpp">
