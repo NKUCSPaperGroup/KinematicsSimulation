@@ -7,20 +7,23 @@
  */
 enum force_type
 {
-	
+	gravity,
+	electro_static,
+	magnetic_static,
+	magnetic,
+	extra
 };
 
 /**
  * \brief a class to describe Force.
  */
-class force : vec3D
+class force : public vec3D
 {
-private:
 	force_type type_;
 public:
 	force(force_type type, double x, double y, double z);
 
-	force(force_type type,const vec3D& vec);
+	force(force_type type, const vec3D& vec);
 
 	force_type type() const
 	{
