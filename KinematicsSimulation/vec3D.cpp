@@ -30,7 +30,7 @@ vec3D vec3D::cross(const vec3D& b) const
 
 vec3D vec3D::cross(const vec3D& a, const vec3D& b)
 {
-	return vec3D(a.y_ * b.z_ - a.z_ * b.y_, a.z_ * b.z_ - a.x_ * b.z_, a.x_ * b.y_ - a.y_ * b.x_);
+	return vec3D(a.y_ * b.z_ - a.z_ * b.y_, b.x_ * a.z_ - a.x_ * b.z_, a.x_ * b.y_ - a.y_ * b.x_);
 }
 
 vec3D operator+(const vec3D& a, const vec3D& b)
@@ -50,7 +50,7 @@ double operator*(const vec3D& a, const vec3D& b)
 
 vec3D operator*(const vec3D& a, double b)
 {
-	return vec3D{b * (a.x_), b * (a.y_), b * (a.z_)};
+	return vec3D{ b * (a.x_), b * (a.y_), b * (a.z_) };
 }
 
 vec3D operator/(const vec3D& a, double b)
