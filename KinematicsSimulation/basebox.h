@@ -6,16 +6,15 @@
 
 class basebox
 {
-protected:
-	~basebox() = default;
 public:
 	basebox(const vec3D& position, const vec3D& size);
+	virtual ~basebox() = default;
 	/**
 	 * \brief test whether this box is colliding with another one.
 	 * \param box the other one 
 	 * \return colliding=>true , not=>false
 	 */
-	bool is_box_collide(const basebox& box) const;
+	virtual bool is_box_collide(const basebox& box);
 protected:
 	//position_ is the position of center
 	vec3D position_;
