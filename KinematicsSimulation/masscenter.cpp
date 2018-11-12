@@ -32,20 +32,35 @@ masscenter::masscenter(const std::string name, const basebox& box, const vec3D& 
 
 void masscenter::calculate_acceleration()
 {
+	vec3D sum;
+	for (const auto& f : forces_)
+	{
+		sum = f + sum;
+	}
+	acceleration_ = sum / this->mass();
 }
 
 void masscenter::move(const double dt)
 {
+	this->position_ = velosity_ * dt + acceleration_ * (0.5 * dt * dt);
 }
 
 void masscenter::clear_force()
 {
+	this->forces_.clear();
+}
+
+void masscenter::add_force(force& f)
+{
+	this->forces_.push_back(f);
 }
 
 void masscenter::add_gravity_to(masscenter& obj, const double other_mass)
 {
+	//@kirakira666
 }
 
 void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_q)
 {
+	//@kirakira666
 }
