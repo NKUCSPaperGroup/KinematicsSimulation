@@ -15,7 +15,7 @@ public:
 	 * \param box the other one 
 	 * \return colliding=>true , not=>false
 	 */
-	bool is_box_collide(const basebox& box);
+	bool is_box_collide(const basebox& box) const;
 protected:
 	//position_ is the position of center
 	vec3D position_;
