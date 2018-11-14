@@ -74,7 +74,6 @@ public:
 	friend bool operator!=(const masscenter& lhs, const masscenter& rhs);
 
 	friend std::size_t hash_value(const masscenter& obj);
-
 };
 
 
@@ -82,11 +81,11 @@ class masscenter_save
 {
 public:
 	masscenter_save(masscenter& o)
-		:position(o.position()), size(o.size()), v(o.velosity()), foces(o.forces())
+		: position(o.position()), v(o.velosity()), foces(o.forces())
 	{
 	}
+
 	vec3D position;
-	vec3D size;
 	vec3D v;
 	std::list<force> foces;
 };
