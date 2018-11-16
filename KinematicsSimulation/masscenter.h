@@ -40,6 +40,28 @@ public:
 		return forces_;
 	}
 
+	static masscenter merge(const std::vector<masscenter>& ms, const std::vector<double>& vs)
+	{
+		vec3D p, v, a;
+		double sum = 0;
+		for (size_t i = 0; i < ms.size(); ++i)
+		{
+			sum += vs[i];
+			p += ms[i].position_;
+			p *= vs[i];
+			v += ms[i].velosity_;
+			v *= vs[i];
+			a += ms[i].acceleration_;
+			a *= vs[i];
+		}
+		p /= sum;
+		v /= sum;
+		a /= sum;
+		auto re = masscenter{ms[0].name_, p, ms[0].size_, v, ms[0].mass_, ms[0].q_, ms[0].e_};
+		re.acceleration_ = a;
+		return re;
+	}
+
 private:
 	double q_;
 	double e_;
