@@ -36,6 +36,14 @@ public:
 
 	friend vec3D operator+(const vec3D& a, const vec3D& b);
 
+	vec3D& operator+=(const vec3D&);
+
+	vec3D& operator-=(const vec3D&);
+
+	vec3D& operator*=(double);
+
+	vec3D& operator/=(double);
+
 	friend vec3D operator-(const vec3D& a, const vec3D& b);
 
 

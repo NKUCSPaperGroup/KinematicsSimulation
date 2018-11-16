@@ -23,6 +23,38 @@ vec3D vec3D::unit() const
 	return *this / this->length();
 }
 
+vec3D& vec3D::operator+=(const vec3D& a)
+{
+	this->x_ += a.x_;
+	this->y_ += a.y_;
+	this->z_ += a.z_;
+	return *this;
+}
+
+vec3D& vec3D::operator-=(const vec3D& a)
+{
+	this->x_ -= a.x_;
+	this->y_ -= a.y_;
+	this->z_ -= a.z_;
+	return *this;
+}
+
+vec3D& vec3D::operator*=(const double a)
+{
+	this->x_ *= a;
+	this->y_ *= a;
+	this->z_ *= a;
+	return *this;
+}
+
+vec3D& vec3D::operator/=(const double a)
+{
+	this->x_ /= a;
+	this->y_ /= a;
+	this->z_ /= a;
+	return *this;
+}
+
 vec3D vec3D::cross(const vec3D& b) const
 {
 	return cross(*this, b);
@@ -50,7 +82,7 @@ double operator*(const vec3D& a, const vec3D& b)
 
 vec3D operator*(const vec3D& a, double b)
 {
-	return vec3D{ b * (a.x_), b * (a.y_), b * (a.z_) };
+	return vec3D{b * (a.x_), b * (a.y_), b * (a.z_)};
 }
 
 vec3D operator/(const vec3D& a, double b)
