@@ -13,7 +13,6 @@ public:
 	           double e
 	);
 
-
 	masscenter(const std::string name, const basebox& box, const vec3D& velosity, double mass, double q, double e
 	);
 

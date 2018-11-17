@@ -42,10 +42,21 @@ void masscenter::clear_force()
 {
 }
 
-void masscenter::add_gravity_to(masscenter& obj, const double other_mass)
+void masscenter::add_force()
 {
 }
 
-void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_q)
+void masscenter::add_gravity_to(masscenter&obj, const double other_mass, const vec3D& position)
+
 {
+	const double G = 6.67e-11;
+	vec3D fvalue = (obj.position_ - position).unit()*((G * obj.mass*other_mass) /((obj.position_ - position)*(obj.position_ - position)));
+	force f{ gravity,fvalue };
+}
+
+void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_q, const vec3D& position)
+{
+	const double K = 9.0e-9;
+	vec3D fvalue = (obj.position_ - position).unit()*((K* obj.q_*other_q) / ((obj.position_ - position)*(obj.position_ - position)));
+	force f{ electrostatic,fvalue };
 }
