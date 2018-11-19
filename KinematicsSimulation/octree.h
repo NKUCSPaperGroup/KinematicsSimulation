@@ -75,6 +75,8 @@ protected:
 		collide_result forward_test_collide() const;
 		collide_result self_test_collide() const;
 
+		void refresh();
+
 		//utils
 		static collide_result merge_result(collide_result a, collide_result b)
 		{
@@ -121,6 +123,8 @@ public:
 	}
 
 	void clear() { root_->clear(); }
+
+	void refresh();
 
 	size_t size() const { return size_; }
 

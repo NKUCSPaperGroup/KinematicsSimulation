@@ -2,54 +2,92 @@
 #include "field.h"
 #include <map>
 #include "tracker.h"
+#include "octree.h"
 
 class physics_sence
 {
 	class frame;
 	friend frame;
 	using pf = std::shared_ptr<frame>;
-	using result = tracker<masscenter, masscenter_save>;
+	using pm = std::shared_ptr<masscenter>;
+	using result = std::shared_ptr<tracker<masscenter, masscenter_save>>;
 	using time_squence = std::vector<double>;
 	using result_map = std::pair<time_squence, std::map<std::string, result>>;
 public:
 	void add_field(const field&);
-	void add_mass_center(masscenter&, bool = false);
-	bool remove(const masscenter& o) { return remove(o.name()); }
-	bool remove(const field&);
-	bool remove(const std::string&);
+	void add_mass_center(const masscenter&, bool = false);
+	void remove(const masscenter& o) { return remove(o.name()); }
+	void remove(const field&);
+	void remove(const std::string&);
 
-	masscenter& get_masscenter(std::string) const;
+	struct run_setting
+	{
+		double start_time = 0;
+		double end_time = 1;
+		double delta_time = 1e-4;
+		double reaction_time = 3e-4;
+		double save_duration = 20;
+	};
 
-	void set_st(double = 0);
-	void set_dt(double);
-	void set_et(double);
-	void set_SPF(size_t);
+	run_setting& setting()
+	{
+		return setting_;
+	}
 
 	void run();
 
-	result_map get_result_map() const
+	double current_time() const
 	{
-		return result_;
+		return this->present_->get_time();
 	}
 
-	std::pair<time_squence, result> get_result(const std::string& name) const
-	{
-		return std::make_pair(result_.first, result_.second.at(name));
-	}
+	result_map get_result_map() const;
+	std::pair<time_squence, result> get_result(const std::string&) const;
 
 private:
 	class frame
 	{
-		friend physics_sence;
-	private:
+	public:
+		void run();
+		frame(physics_sence& scene);
+		frame(const frame&);
 
+		pf next_frame();
+		double get_time() const { return time_; }
+	private:
 		void update_extra_force();
 
 		void update_internal_force();
 
-		std::list<field> fields_;
-		std::list<masscenter> objs_;
+		void update_collide_force();
+
+		void update_objs();
+
+		pf build_next_frame(double);
+
+		double time_;
+
+		std::vector<pm> objs_;
+
+		physics_sence& scene_;
 	};
+
+	void run_inti()
+	{
+		this->inti_ = std::make_shared<frame>(*this);
+		this->present_ = std::make_shared<frame>(*inti_);
+		update_time_squence(setting_.start_time);
+	}
+
+	void next_frame()
+	{
+		this->present_ = this->present_->next_frame();
+	}
+
+	bool time_to_save()
+	{
+		return current_time() - result_.first[result_.first.size() - 1] >= setting_.save_duration;
+	}
 
 	void update_time_squence(const double time)
 	{
@@ -60,12 +98,27 @@ private:
 	{
 		for (auto pair : result_.second)
 		{
-			pair.second.trace();
+			pair.second->trace();
 		}
 	}
 
+	run_setting setting_;
+
 	pf inti_;
 	pf present_;
-	std::vector<pf> frame_pool_;
+
+	struct collide_reaction
+	{
+		pm masscenter;
+		force* force;
+		double action_time;
+	};
+
+	std::map<std::string, collide_reaction> colliding_;
+
+	std::list<std::shared_ptr<field>> fields_;
+	std::vector<pm> objs_;
+	octree<pm> treed_objs_;
+
 	result_map result_;
 };

@@ -33,6 +33,7 @@
     <ClCompile Include="basebox.cpp" />
     <ClCompile Include="force.cpp" />
     <ClCompile Include="masscenter.cpp" />
+    <ClCompile Include="physics_sence.cpp" />
     <ClCompile Include="vec3D.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
