@@ -41,6 +41,6 @@ public:
 		return seed;
 	}
 
-private:
+protected:
 	double mass_;
 };

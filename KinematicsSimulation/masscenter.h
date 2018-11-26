@@ -28,6 +28,8 @@ public:
 
 	void clear_force();
 
+	void add_force(force&);
+
 	static void add_gravity_to(masscenter& obj, double other_mass);
 
 	static void add_electrostatic_force_to(masscenter& obj, double other_q);
@@ -36,6 +38,28 @@ public:
 	std::list<force> forces() const
 	{
 		return forces_;
+	}
+
+	static masscenter merge(const std::vector<masscenter>& ms, const std::vector<double>& vs)
+	{
+		vec3D p, v, a;
+		double sum = 0;
+		for (size_t i = 0; i < ms.size(); ++i)
+		{
+			sum += vs[i];
+			p += ms[i].position_;
+			p *= vs[i];
+			v += ms[i].velosity_;
+			v *= vs[i];
+			a += ms[i].acceleration_;
+			a *= vs[i];
+		}
+		p /= sum;
+		v /= sum;
+		a /= sum;
+		auto re = masscenter{ms[0].name_, p, ms[0].size_, v, ms[0].mass_, ms[0].q_, ms[0].e_};
+		re.acceleration_ = a;
+		return re;
 	}
 
 private:
@@ -73,18 +97,17 @@ public:
 
 	friend std::size_t hash_value(const masscenter& obj);
 
-};
-
-
-class masscenter_save
-{
-public:
-	masscenter_save(masscenter& o)
-		:position(o.position()), size(o.size()), v(o.velosity()), foces(o.forces())
+	class save_type
 	{
-	}
-	vec3D position;
-	vec3D size;
-	vec3D v;
-	std::list<force> foces;
+	public:
+		explicit save_type(const masscenter& o)
+			: position(o.position()), v(o.velosity()), foces(o.forces())
+		{
+		}
+
+		vec3D position;
+		vec3D v;
+		std::list<force> foces;
+	};
 };
+
