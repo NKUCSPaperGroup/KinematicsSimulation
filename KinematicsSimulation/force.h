@@ -3,7 +3,7 @@
 #include <ostream>
 
 /**
- * \brief the type of force
+ * \brief the type of f
  */
 enum force_type
 {
@@ -11,6 +11,7 @@ enum force_type
 	electro_static,
 	magnetic_static,
 	magnetic,
+	collide,
 	extra
 };
 

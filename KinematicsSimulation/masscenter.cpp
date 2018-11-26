@@ -58,9 +58,11 @@ void masscenter::add_force(force& f)
 void masscenter::add_gravity_to(masscenter& obj, const double other_mass)
 {
 	//@kirakira666
+	//TODO
 }
 
 void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_q)
 {
 	//@kirakira666
+	//TODO
 }

@@ -1,11 +1,6 @@
 #include "physics_sence.h"
 #include <future>
 
-void physics_sence::add_field(const field& field)
-{
-	this->fields_.push_back(std::make_shared<decltype(field)>(field));
-}
-
 void physics_sence::add_mass_center(const masscenter& o, const bool b)
 {
 	const auto p = std::make_shared<masscenter>(o);
@@ -13,26 +8,17 @@ void physics_sence::add_mass_center(const masscenter& o, const bool b)
 	this->treed_objs_.add(p);
 	if (b)
 	{
-		auto ps = std::make_shared<tracker<masscenter, masscenter_save>>();
+		auto ps = std::make_shared<tracker<masscenter, masscenter::save_type>>();
 		ps->bind(*p);
 		ps->trace();
 		this->result_.second.insert({p->name(), ps});
 	}
 }
 
-void physics_sence::remove(const field& f)
-{
-	this->fields_.remove_if([=](const std::shared_ptr<field> ef)-> bool { return (*ef) == f; });
-}
-
 void physics_sence::remove(const std::string& name)
 {
-	const auto p = std::find_if(objs_.begin(), objs_.end(), [=](const pm e)-> bool { return e->name() == name; });
-	this->treed_objs_.remove(*p);
-	if (p != objs_.end())
-	{
-		this->objs_.erase(p);
-	}
+	objs_.remove_if([=](const pm e)-> bool { return e->name() == name; });
+	this->treed_objs_.remove(name);
 }
 
 void physics_sence::run()
@@ -74,16 +60,25 @@ void physics_sence::frame::run()
 physics_sence::frame::frame(physics_sence& scene)
 	: time_(scene.current_time()), objs_(scene.objs_), scene_(scene)
 {
+	colliding_ = std::make_shared<std::map<std::string, collide_reaction>>();
 }
 
 physics_sence::frame::frame(const frame& f)
-	: time_(f.time_), objs_(f.objs_), scene_(f.scene_)
+	: colliding_(f.colliding_), time_(f.time_), objs_(f.objs_), scene_(f.scene_)
 {
 }
 
 physics_sence::pf physics_sence::frame::next_frame()
 {
 	return build_next_frame(this->scene_.setting().delta_time);
+}
+
+void physics_sence::frame::clear_force()
+{
+	for (auto mc : this->objs_)
+	{
+		mc->clear_force();
+	}
 }
 
 void physics_sence::frame::update_extra_force()
@@ -115,9 +110,68 @@ void physics_sence::frame::update_internal_force()
 	}
 }
 
-void physics_sence::frame::update_collide_force()
+physics_sence::frame::collide_reaction::
+collide_reaction(const pm masscenter, const vec3D& fv, const double action_time)
+: masscenter(masscenter),f(std::make_shared<force>(collide, fv)),action_time(action_time)
+{
+}
+
+void physics_sence::frame::colliding_attach() const
+{
+	for (auto& p : *colliding_)
+	{
+		p.second.masscenter->add_force(*p.second.f);
+	}
+}
+
+void physics_sence::frame::update_collide_force() const
 {
 	//this is hard
+	remove_overtime_colliding();
+	add_new_colliding();
+	colliding_attach();
+}
+
+void physics_sence::frame::remove_overtime_colliding() const
+{
+	std::vector<decltype(colliding_->begin())> ps;
+	for (auto i = colliding_->begin(); i != colliding_->end(); ++i)
+	{
+		i->second.action_time -= scene_.setting_.delta_time;
+		if (i->second.action_time <= 0)
+		{
+			ps.push_back(i);
+		}
+	}
+	for (const auto& iterator : ps)
+	{
+		colliding_->erase(iterator);
+	}
+}
+
+void physics_sence::frame::add_new_colliding() const
+{
+	const auto res = scene_.treed_objs_.test_collide();
+	for (auto& pair : *res)
+		if (isnot_this_colliding_added(pair))
+			build_new_colliding(pair);
+}
+
+bool physics_sence::frame::isnot_this_colliding_added(const std::pair<pm, pm>& p) const
+{
+	if (colliding_->count(p.first->name()))
+	{
+		return *(*colliding_)[p.first->name()].masscenter == *p.second;
+	}
+	return true;
+}
+
+void physics_sence::frame::build_new_colliding(const std::pair<pm, pm> pair) const
+{
+	//TODO fv should be calc
+	vec3D fv;//pair.first to pair.second
+	const auto reaction_time = this->scene_.setting().reaction_time;
+	this->colliding_->insert({ pair.first->name(),collide_reaction{pair.second,fv,reaction_time} });
 }
 
 void physics_sence::frame::update_objs()

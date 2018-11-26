@@ -15,20 +15,7 @@ public:
 
 	virtual ~field() = default;
 
+	virtual bool is_in_field(double time, masscenter& obj) = 0;
 
-	friend bool operator==(const field& lhs, const field& rhs)
-	{
-		return static_cast<const basebox&>(lhs) == static_cast<const basebox&>(rhs);
-	}
-
-	friend bool operator!=(const field& lhs, const field& rhs)
-	{
-		return !(lhs == rhs);
-	}
-
-	virtual bool is_in_field(double time, masscenter& obj) { return false; }
-
-	virtual void add_force(double time, masscenter& obj)
-	{
-	}
+	virtual void add_force(double time, masscenter& obj) = 0;
 };
