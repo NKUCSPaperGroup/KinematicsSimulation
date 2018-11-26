@@ -91,6 +91,7 @@ private:
 			double action_time;
 
 			collide_reaction(const pm masscenter, const vec3D& fv, const double action_time);
+			collide_reaction() = default;
 		};
 
 		void colliding_attach() const;
