@@ -60,13 +60,13 @@ protected:
 		location test_range(E);
 
 		//utils
-		constexpr static collide_result create_empty_result()
+		static collide_result create_empty_result()
 		{
 			return std::make_shared<std::list<std::pair<E, E>>>();
 		}
 
 		//utils
-		constexpr static void add_to_result(collide_result re, E a, E b, const bool outer)
+		static void add_to_result(collide_result re, E a, E b, const bool outer)
 		{
 			re->push_back(std::make_pair(a, b));
 			if (outer)
@@ -81,41 +81,18 @@ protected:
 		void refresh();
 
 		//utils
-		static collide_result merge_result(collide_result a, collide_result b)
+		static void merge_result(collide_result to, collide_result from)
 		{
-			a->merge(*b);
-			return a;
+			to->merge(*from);
 		}
 
 		void warp(E obj);
 
-		constexpr static vec3D calc_position(pn super, location subs);
-		constexpr static vec3D calc_size(pn super, location subs);
+		static vec3D calc_position(pn super, location subs);
+		static vec3D calc_size(pn super, location subs);
 	};
 
 public:
-	// template <typename Ele>
-	// class octree_iter
-	// {
-	// public:
-	// 	Ele operator*(const octree_iter&);
-	//
-	// 	bool operator==(const octree_iter& lhs, const octree_iter& rhs) = delete;
-	//
-	// 	bool operator!=(const octree_iter& lhs, const octree_iter& rhs)
-	// 	{
-	// 		return !(lhs == rhs);
-	// 	}
-	//
-	// 	octree_iter operator++(int);
-	//
-	// 	octree_iter operator--(int);
-	// };
-	//
-	// octree_iter<E> begin();
-	//
-	// octree_iter<E> end();
-
 	void add(E obj)
 	{
 		root_->add(obj);
@@ -159,7 +136,6 @@ template <typename E>
 void octree<E>::node::add(E obj)
 {
 	auto lo = test_range(obj);
-	//@Zhangxuanheng
 	switch (lo)
 	{
 	case OVER:
@@ -182,7 +158,6 @@ bool octree<E>::node::remove(const std::string obj)
 	auto fi = std::find_if(this->objs_.begin(), this->objs_.end(), [=](auto& o)-> bool { return o->name() == obj; });
 	if (fi == objs_.end())
 	{
-		auto tag = false;
 		for (pn& p : subs_)
 		{
 			if (p->remove(obj))
@@ -209,37 +184,73 @@ void octree<E>::node::clear()
 template <typename E>
 typename octree<E>::collide_result octree<E>::node::test_collide() const
 {
-	//@kirakira666
+	if (this->subs_ == nullptr || this->subs_.empty())
+	{
+		return merge_result(this->self_test_collide(), this->forward_test_collide());
+	}
+	if (this->super_ == nullptr)
+	{
+		std::list<std::future<collide_result>> tasks;
+		for (pn&& sub : subs_)
+		{
+			tasks.push_back(std::async([&]()-> collide_result { return sub->test_collide(); }));
+		}
+		auto re = create_empty_result();
+		for (std::future<collide_result>& task : tasks)
+		{
+			merge_result(re, task.get());
+		}
+		return re;
+	}
+	else
+	{
+		auto re = create_empty_result();
+		for(pn& p :this->subs_)
+		{
+			merge_result(re, p->test_collide());
+		}
+		return re;
+	}
 }
 
 //utils
 #define SIZE(e) ((e)->size())
 #define POS(e) (e)->position()
 #define BOXC(a,b) (a)->is_box_collide(*(b))
-#define all_in(a,b) \
+#define ALL_IN(a,b) \
 (SIZE(a).x() - SIZE(obj).x() >= 2.0 * abs(POS(obj).x() - POS(a).x())\
 && SIZE(a).y() - SIZE(obj).y() >= 2.0 * abs(POS(obj).y() - POS(a).y())\
 && SIZE(a).z() - SIZE(obj).z() >= 2.0 * abs(POS(obj).z() - POS(a).z()))
 
 template <typename E>
-constexpr vec3D octree<E>::node::calc_position(pn super, location subs)
+vec3D octree<E>::node::calc_position(pn super, const location subs)
 {
-	//@YujiangZhou TODO
+	return vec3D{
+		subs & 4
+			? super->position().x() - super->size().x() / 2
+			: super->position().x() + super->size().x() / 2,
+		subs & 2
+			? super->position().y() - super->size().y() / 2
+			: super->position().y() + super->size().y() / 2,
+		subs & 1
+			? super->position().z() - super->size().z() / 2
+			: super->position().z() + super->size().z() / 2,
+	};
 }
 
 template <typename E>
-constexpr vec3D octree<E>::node::calc_size(pn super, location subs)
+vec3D octree<E>::node::calc_size(pn super, location subs)
 {
-	//@YujiangZhou TODO
+	return vec3D{super->size().x()};
 }
 
 template <typename E>
 typename octree<E>::location octree<E>::node::test_range(E obj)
 {
-	if (all_in(this, obj))
+	if (ALL_IN(this, obj))
 	{
 		for (auto i = 0; i < 8; ++i)
-			if (all_in(subs_[i], obj))
+			if (ALL_IN(subs_[i], obj))
 				return location(i);
 		return AXIS;
 	}
@@ -249,13 +260,33 @@ typename octree<E>::location octree<E>::node::test_range(E obj)
 template <typename E>
 typename octree<E>::collide_result octree<E>::node::forward_test_collide() const
 {
-	//@kirakira666 TODO
+	auto empty_result = create_empty_result();
+	for (auto np = this->super_;np!=nullptr;np = np->super_)
+		for (auto& e1 : np->objs_)
+			for (auto& e2 : this->objs_)
+				if (BOXC(e1, e2))
+					add_to_result(empty_result, e1, e2, true);
+	return empty_result;
 }
 
 template <typename E>
 typename octree<E>::collide_result octree<E>::node::self_test_collide() const
 {
-	//@kirakira666 TODO
+	auto rep = create_empty_result();
+	for (auto& e1 : this->objs_)
+	{
+		for (auto& e2 : this->objs_)
+		{
+			if (e1 != e2)
+			{
+				if (BOXC(e1,e2))
+				{
+					add_to_result(rep, e1, e2, false);
+				}
+			}
+		}
+	}
+	return rep;
 }
 
 template <typename E>
@@ -281,5 +312,6 @@ void octree<E>::node::refresh()
 template <typename E>
 void octree<E>::node::warp(E obj)
 {
-	//TODO calc warp
+	//TODO
+	this->objs_.push_back(obj);
 }
