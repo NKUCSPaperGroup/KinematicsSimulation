@@ -184,14 +184,17 @@ void octree<E>::node::clear()
 template <typename E>
 typename octree<E>::collide_result octree<E>::node::test_collide() const
 {
-	if (this->subs_ == nullptr || this->subs_.empty())
+	if (this->subs_.empty())
 	{
-		return merge_result(this->self_test_collide(), this->forward_test_collide());
+		auto re = create_empty_result();
+		merge_result(re, this->self_test_collide());
+		merge_result(re, this->forward_test_collide());
+		return re;
 	}
 	if (this->super_ == nullptr)
 	{
 		std::list<std::future<collide_result>> tasks;
-		for (pn&& sub : subs_)
+		for (const pn& sub : subs_)
 		{
 			tasks.push_back(std::async([&]()-> collide_result { return sub->test_collide(); }));
 		}
@@ -205,7 +208,7 @@ typename octree<E>::collide_result octree<E>::node::test_collide() const
 	else
 	{
 		auto re = create_empty_result();
-		for(pn& p :this->subs_)
+		for (const pn& p : this->subs_)
 		{
 			merge_result(re, p->test_collide());
 		}
@@ -261,7 +264,7 @@ template <typename E>
 typename octree<E>::collide_result octree<E>::node::forward_test_collide() const
 {
 	auto empty_result = create_empty_result();
-	for (auto np = this->super_;np!=nullptr;np = np->super_)
+	for (auto np = this->super_; np != nullptr; np = np->super_)
 		for (auto& e1 : np->objs_)
 			for (auto& e2 : this->objs_)
 				if (BOXC(e1, e2))
