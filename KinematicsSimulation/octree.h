@@ -8,7 +8,7 @@
 
 const vec3D inti_size;
 const vec3D inti_pos = {0, 0, 0};
-
+const size_t split_size = 10;
 //The ptr to obj of basebox
 template <typename E>
 class octree
@@ -19,6 +19,11 @@ public:
 	using collide_result = std::shared_ptr<std::list<std::pair<E, E>>>;
 	template <typename Ele>
 	friend class octree_iter;
+	octree():root_(std::make_shared<node>())
+	{
+		root_->split(root_);
+	}
+
 protected:
 
 	enum location
@@ -38,7 +43,7 @@ protected:
 	class node : public basebox
 	{
 	public:
-
+		friend octree;
 		node();
 
 		node(location location, pn super,
@@ -58,6 +63,8 @@ protected:
 	private:
 
 		location test_range(E);
+
+		void split(pn this_node);
 
 		//utils
 		static collide_result create_empty_result()
@@ -135,6 +142,10 @@ octree<E>::node::node(const location location, pn super, std::list<E> objs)
 template <typename E>
 void octree<E>::node::add(E obj)
 {
+	if (this->objs_.size()>split_size&&this->subs_.empty())
+	{
+		this->split(super_->subs_.at(location_));
+	}
 	auto lo = test_range(obj);
 	switch (lo)
 	{
@@ -244,7 +255,7 @@ vec3D octree<E>::node::calc_position(pn super, const location subs)
 template <typename E>
 vec3D octree<E>::node::calc_size(pn super, location subs)
 {
-	return vec3D{super->size().x()};
+	return vec3D{super->size().x()/2,super->size().y()/2,super->size().z()/2};
 }
 
 template <typename E>
@@ -258,6 +269,17 @@ typename octree<E>::location octree<E>::node::test_range(E obj)
 		return AXIS;
 	}
 	return OVER;
+}
+
+template <typename E>
+void octree<E>::node::split(pn this_node)
+{
+	for (int i = 0; i < 8; ++i)
+	{
+		node{ location(i),this_node,{} };
+		this->subs_.push_back(std::make_shared<node>());
+	}
+	refresh();
 }
 
 template <typename E>
