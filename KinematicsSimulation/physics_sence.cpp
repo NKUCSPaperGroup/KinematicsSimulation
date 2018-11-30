@@ -48,6 +48,10 @@ std::pair<physics_sence::time_squence, physics_sence::result> physics_sence::get
 
 void physics_sence::frame::run()
 {
+	for (auto& m : this->objs_)
+	{
+		m->clear_force();
+	}
 	auto task1 = std::async([this]()-> void { this->update_extra_force(); });
 	auto task2 = std::async([this]()-> void { this->update_internal_force(); });
 	auto task3 = std::async([this]()-> void { this->update_collide_force(); });
@@ -58,13 +62,13 @@ void physics_sence::frame::run()
 }
 
 physics_sence::frame::frame(physics_sence& scene)
-	: time_(scene.current_time()), objs_(scene.objs_), scene_(scene)
+	: time_(scene.setting().start_time), objs_(scene.objs_), scene_(scene)
 {
 	colliding_ = std::make_shared<std::map<std::string, collide_reaction>>();
 }
 
 physics_sence::frame::frame(const frame& f)
-	: colliding_(f.colliding_), time_(f.time_), objs_(f.objs_), scene_(f.scene_)
+	: time_(f.time_), objs_(f.objs_), colliding_(f.colliding_), scene_(f.scene_)
 {
 }
 

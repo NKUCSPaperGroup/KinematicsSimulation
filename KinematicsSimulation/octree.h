@@ -9,6 +9,7 @@
 const vec3D inti_size;
 const vec3D inti_pos = {0, 0, 0};
 const size_t split_size = 10;
+
 //The ptr to obj of basebox
 template <typename E>
 class octree
@@ -19,10 +20,8 @@ public:
 	using collide_result = std::shared_ptr<std::list<std::pair<E, E>>>;
 	template <typename Ele>
 	friend class octree_iter;
-	octree():root_(std::make_shared<node>())
-	{
-		root_->split(root_);
-	}
+
+	octree();
 
 protected:
 
@@ -67,20 +66,10 @@ protected:
 		void split(pn this_node);
 
 		//utils
-		static collide_result create_empty_result()
-		{
-			return std::make_shared<std::list<std::pair<E, E>>>();
-		}
+		static collide_result create_empty_result();
 
 		//utils
-		static void add_to_result(collide_result re, E a, E b, const bool outer)
-		{
-			re->push_back(std::make_pair(a, b));
-			if (outer)
-			{
-				re->push_back(std::make_pair(b, a));
-			}
-		}
+		static void add_to_result(collide_result re, E a, E b, const bool outer);
 
 		collide_result forward_test_collide() const;
 		collide_result self_test_collide() const;
@@ -88,10 +77,7 @@ protected:
 		void refresh();
 
 		//utils
-		static void merge_result(collide_result to, collide_result from)
-		{
-			to->merge(*from);
-		}
+		static void merge_result(collide_result to, collide_result from);
 
 		void warp(E obj);
 
@@ -100,30 +86,88 @@ protected:
 	};
 
 public:
-	void add(E obj)
-	{
-		root_->add(obj);
-		size_++;
-	}
+	void add(E obj);
 
-	bool remove(std::string obj)
-	{
-		return root_->remove(obj) ? size_--, true : false;
-	}
+	bool remove(std::string obj);
 
-	void clear() { root_->clear(); }
+	void clear();
 
-	void refresh() { root_->refresh(); }
+	void refresh();
 
-	size_t size() const { return size_; }
+	size_t size() const;
 
-	collide_result test_collide() const { return root_->test_collide(); }
+	collide_result test_collide() const;
 
 protected:
 	pn root_;
 private:
 	size_t size_ = 0;
 };
+
+template <typename E>
+octree<E>::octree(): root_(std::make_shared<node>())
+{
+	root_->split(root_);
+}
+
+template <typename E>
+typename octree<E>::collide_result octree<E>::node::create_empty_result()
+{
+	return std::make_shared<std::list<std::pair<E, E>>>();
+}
+
+template <typename E>
+void octree<E>::node::add_to_result(collide_result re, E a, E b, const bool outer)
+{
+	re->push_back(std::make_pair(a, b));
+	if (outer)
+	{
+		re->push_back(std::make_pair(b, a));
+	}
+}
+
+template <typename E>
+void octree<E>::node::merge_result(collide_result to, collide_result from)
+{
+	to->merge(*from);
+}
+
+template <typename E>
+void octree<E>::add(E obj)
+{
+	root_->add(obj);
+	size_++;
+}
+
+template <typename E>
+bool octree<E>::remove(std::string obj)
+{
+	return root_->remove(obj) ? size_--, true : false;
+}
+
+template <typename E>
+void octree<E>::clear()
+{
+	root_->clear();
+}
+
+template <typename E>
+void octree<E>::refresh()
+{
+	root_->refresh();
+}
+
+template <typename E>
+size_t octree<E>::size() const
+{
+	return size_;
+}
+
+template <typename E>
+typename octree<E>::collide_result octree<E>::test_collide() const
+{
+	return root_->test_collide();
+}
 
 template <typename E>
 octree<E>::node::node()
@@ -142,7 +186,7 @@ octree<E>::node::node(const location location, pn super, std::list<E> objs)
 template <typename E>
 void octree<E>::node::add(E obj)
 {
-	if (this->objs_.size()>split_size&&this->subs_.empty())
+	if (this->objs_.size() > split_size && this->subs_.empty())
 	{
 		this->split(super_->subs_.at(location_));
 	}
@@ -255,7 +299,7 @@ vec3D octree<E>::node::calc_position(pn super, const location subs)
 template <typename E>
 vec3D octree<E>::node::calc_size(pn super, location subs)
 {
-	return vec3D{super->size().x()/2,super->size().y()/2,super->size().z()/2};
+	return vec3D{super->size().x() / 2, super->size().y() / 2, super->size().z() / 2};
 }
 
 template <typename E>
@@ -276,8 +320,7 @@ void octree<E>::node::split(pn this_node)
 {
 	for (int i = 0; i < 8; ++i)
 	{
-		node{ location(i),this_node,{} };
-		this->subs_.push_back(std::make_shared<node>());
+		this->subs_.push_back(std::make_shared<node>(location(i), this_node, std::list<E>{}));
 	}
 	refresh();
 }

@@ -11,6 +11,28 @@ bool basebox::is_box_collide(const basebox& box) const
 	return COMP(x) && COMP(y) && COMP(z);
 }
 
+vec3D basebox::position() const
+{
+	return position_;
+}
+
+vec3D basebox::size() const
+{
+	return size_;
+}
+
+bool operator==(const basebox& lhs, const basebox& rhs)
+{
+	return &lhs == &rhs;
+}
+
+std::size_t hash_value(const basebox& obj)
+{
+	std::size_t seed = 0x3D92BBB2;
+	seed ^= (seed << 6) + (seed >> 2) + 0x01857D20 + stdext::hash_value(&obj);
+	return seed;
+}
+
 bool operator!=(const basebox& lhs, const basebox& rhs)
 {
 	return !(lhs == rhs);

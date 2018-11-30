@@ -1,5 +1,24 @@
 #include "vec3D.h"
 
+vec3D::vec3D(): vec3D(0, 0, 0)
+{
+}
+
+double vec3D::x() const
+{
+	return x_;
+}
+
+double vec3D::y() const
+{
+	return y_;
+}
+
+double vec3D::z() const
+{
+	return z_;
+}
+
 vec3D::vec3D(const double x, const double y, const double z) : x_(x), y_(y), z_(z)
 {
 }

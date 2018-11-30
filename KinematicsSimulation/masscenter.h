@@ -17,10 +17,7 @@ public:
 	masscenter(const std::string name, const basebox& box, const vec3D& velosity, double mass, double q, double e
 	);
 
-	masscenter(const std::string name, const basebox& box, const double mass): masscenter(name, box, vec3D{}, mass, 0,
-	                                                                                      1)
-	{
-	}
+	masscenter(const std::string name, const basebox& box, const double mass);
 
 	void calculate_acceleration();
 
@@ -35,32 +32,9 @@ public:
 	static void add_electrostatic_force_to(masscenter& obj, double other_q);
 
 
-	std::list<force> forces() const
-	{
-		return forces_;
-	}
+	std::list<force> forces() const;
 
-	static masscenter merge(const std::vector<masscenter>& ms, const std::vector<double>& vs)
-	{
-		vec3D p, v, a;
-		double sum = 0;
-		for (size_t i = 0; i < ms.size(); ++i)
-		{
-			sum += vs[i];
-			p += ms[i].position_;
-			p *= vs[i];
-			v += ms[i].velosity_;
-			v *= vs[i];
-			a += ms[i].acceleration_;
-			a *= vs[i];
-		}
-		p /= sum;
-		v /= sum;
-		a /= sum;
-		auto re = masscenter{ms[0].name_, p, ms[0].size_, v, ms[0].mass_, ms[0].q_, ms[0].e_};
-		re.acceleration_ = a;
-		return re;
-	}
+	static masscenter merge(const std::vector<masscenter>& ms, const std::vector<double>& vs);
 
 private:
 	double q_;
@@ -71,25 +45,13 @@ private:
 	std::list<force> forces_;
 
 public:
-	double q() const
-	{
-		return q_;
-	}
+	double q() const;
 
-	double e() const
-	{
-		return e_;
-	}
+	double e() const;
 
-	std::string name() const
-	{
-		return name_;
-	}
+	std::string name() const;
 
-	vec3D velosity() const
-	{
-		return velosity_;
-	}
+	vec3D velosity() const;
 
 	friend bool operator==(const masscenter& lhs, const masscenter& rhs);
 
@@ -100,10 +62,7 @@ public:
 	class save_type
 	{
 	public:
-		explicit save_type(const masscenter& o)
-			: position(o.position()), v(o.velosity()), foces(o.forces())
-		{
-		}
+		explicit save_type(const masscenter& o);
 
 		vec3D position;
 		vec3D v;

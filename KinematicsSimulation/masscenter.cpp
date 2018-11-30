@@ -30,6 +30,63 @@ masscenter::masscenter(const std::string name, const basebox& box, const vec3D& 
 {
 }
 
+masscenter::masscenter(const std::string name, const basebox& box, const double mass): masscenter(
+	name, box, vec3D{}, mass, 0,
+	1)
+{
+}
+
+std::list<force> masscenter::forces() const
+{
+	return forces_;
+}
+
+masscenter masscenter::merge(const std::vector<masscenter>& ms, const std::vector<double>& vs)
+{
+	vec3D p, v, a;
+	double sum = 0;
+	for (size_t i = 0; i < ms.size(); ++i)
+	{
+		sum += vs[i];
+		p += ms[i].position_;
+		p *= vs[i];
+		v += ms[i].velosity_;
+		v *= vs[i];
+		a += ms[i].acceleration_;
+		a *= vs[i];
+	}
+	p /= sum;
+	v /= sum;
+	a /= sum;
+	auto re = masscenter{ms[0].name_, p, ms[0].size_, v, ms[0].mass_, ms[0].q_, ms[0].e_};
+	re.acceleration_ = a;
+	return re;
+}
+
+double masscenter::q() const
+{
+	return q_;
+}
+
+double masscenter::e() const
+{
+	return e_;
+}
+
+std::string masscenter::name() const
+{
+	return name_;
+}
+
+vec3D masscenter::velosity() const
+{
+	return velosity_;
+}
+
+masscenter::save_type::save_type(const masscenter& o): position(o.position()), v(o.velosity()), foces(o.forces())
+{
+}
+
 void masscenter::calculate_acceleration()
 {
 	vec3D sum;
@@ -42,7 +99,9 @@ void masscenter::calculate_acceleration()
 
 void masscenter::move(const double dt)
 {
-	this->position_ = velosity_ * dt + acceleration_ * (0.5 * dt * dt);
+	this->calculate_acceleration();
+	this->position_ += velosity_ * dt + acceleration_ * (0.5 * dt * dt);
+	this->velosity_ += acceleration_ * dt;
 }
 
 void masscenter::clear_force()
