@@ -22,8 +22,10 @@
     <ClInclude Include="basebox.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="force.h" />
+    <ClInclude Include="kinematics_lib.h" />
     <ClInclude Include="massbody.h" />
     <ClInclude Include="masscenter.h" />
+    <ClInclude Include="result_IO.h" />
     <ClInclude Include="tracker.h" />
     <ClInclude Include="octree.h" />
     <ClInclude Include="physics_sence.h" />
@@ -34,6 +36,7 @@
     <ClCompile Include="force.cpp" />
     <ClCompile Include="masscenter.cpp" />
     <ClCompile Include="physics_sence.cpp" />
+    <ClCompile Include="result_IO.cpp" />
     <ClCompile Include="vec3D.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
