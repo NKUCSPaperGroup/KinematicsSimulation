@@ -27,9 +27,9 @@ public:
 
 	void add_force(force&);
 
-	static void add_gravity_to(masscenter& obj, double other_mass);
+	static void add_gravity_to(masscenter& obj, double other_mass,const vec3D&);
 
-	static void add_electrostatic_force_to(masscenter& obj, double other_q);
+	static void add_electrostatic_force_to(masscenter& obj, double other_q,const vec3D&);
 
 
 	std::list<force> forces() const;

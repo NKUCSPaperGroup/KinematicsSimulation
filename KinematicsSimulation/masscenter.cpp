@@ -114,14 +114,20 @@ void masscenter::add_force(force& f)
 	this->forces_.push_back(f);
 }
 
-void masscenter::add_gravity_to(masscenter& obj, const double other_mass)
+void masscenter::add_gravity_to(masscenter& obj, const double other_mass, const vec3D& pos2)
 {
-	//@kirakira666
-	//TODO
+#define G 6.67e-11
+	auto fv = ((pos2 - obj.position()).unit()) * (G * (obj.mass() * other_mass)) / (pow(
+		(pos2 - obj.position()).length(), 3.0));
+	force f{gravity, f};
+	obj.add_force(f);
 }
 
-void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_q)
+void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_q, const vec3D& pos2)
 {
-	//@kirakira666
-	//TODO
+#define K 9e9
+	auto fv = ((pos2 - obj.position()).unit()) * (K * (-obj.q() * other_q)) / (pow(
+		(pos2 - obj.position()).length(), 3.0));
+	force f{electro_static, f};
+	obj.add_force(f);
 }
