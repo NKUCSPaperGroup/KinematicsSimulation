@@ -10,10 +10,10 @@ class physics_sence
 	friend frame;
 	using pf = std::shared_ptr<frame>;
 	using pm = std::shared_ptr<masscenter>;
+public:
 	using result = std::shared_ptr<tracker<masscenter, masscenter::save_type>>;
 	using time_squence = std::vector<double>;
 	using result_map = std::pair<time_squence, std::map<std::string, result>>;
-public:
 
 	template <typename Field>
 	void add_field(const Field& f);
