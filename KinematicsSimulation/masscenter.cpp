@@ -30,6 +30,63 @@ masscenter::masscenter(const std::string name, const basebox& box, const vec3D& 
 {
 }
 
+masscenter::masscenter(const std::string name, const basebox& box, const double mass): masscenter(
+	name, box, vec3D{}, mass, 0,
+	1)
+{
+}
+
+std::list<force> masscenter::forces() const
+{
+	return forces_;
+}
+
+masscenter masscenter::merge(const std::vector<masscenter>& ms, const std::vector<double>& vs)
+{
+	vec3D p, v, a;
+	double sum = 0;
+	for (size_t i = 0; i < ms.size(); ++i)
+	{
+		sum += vs[i];
+		p += ms[i].position_;
+		p *= vs[i];
+		v += ms[i].velosity_;
+		v *= vs[i];
+		a += ms[i].acceleration_;
+		a *= vs[i];
+	}
+	p /= sum;
+	v /= sum;
+	a /= sum;
+	auto re = masscenter{ms[0].name_, p, ms[0].size_, v, ms[0].mass_, ms[0].q_, ms[0].e_};
+	re.acceleration_ = a;
+	return re;
+}
+
+double masscenter::q() const
+{
+	return q_;
+}
+
+double masscenter::e() const
+{
+	return e_;
+}
+
+std::string masscenter::name() const
+{
+	return name_;
+}
+
+vec3D masscenter::velosity() const
+{
+	return velosity_;
+}
+
+masscenter::save_type::save_type(const masscenter& o): position(o.position()), v(o.velosity()), foces(o.forces())
+{
+}
+
 void masscenter::calculate_acceleration()
 {
 	vec3D sum;
@@ -42,7 +99,9 @@ void masscenter::calculate_acceleration()
 
 void masscenter::move(const double dt)
 {
-	this->position_ = velosity_ * dt + acceleration_ * (0.5 * dt * dt);
+	this->calculate_acceleration();
+	this->position_ += velosity_ * dt + acceleration_ * (0.5 * dt * dt);
+	this->velosity_ += acceleration_ * dt;
 }
 
 void masscenter::clear_force()
@@ -55,14 +114,20 @@ void masscenter::add_force(force& f)
 	this->forces_.push_back(f);
 }
 
-void masscenter::add_gravity_to(masscenter& obj, const double other_mass)
+void masscenter::add_gravity_to(masscenter& obj, const double other_mass, const vec3D& pos2)
 {
-	//@kirakira666
-	//TODO
+#define G 6.67e-11
+	auto fv = ((pos2 - obj.position()).unit()) * (G * (obj.mass() * other_mass)) / (pow(
+		(pos2 - obj.position()).length(), 3.0));
+	force f{gravity, f};
+	obj.add_force(f);
 }
 
-void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_q)
+void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_q, const vec3D& pos2)
 {
-	//@kirakira666
-	//TODO
+#define K 9e9
+	auto fv = ((pos2 - obj.position()).unit()) * (K * (-obj.q() * other_q)) / (pow(
+		(pos2 - obj.position()).length(), 3.0));
+	force f{electro_static, f};
+	obj.add_force(f);
 }

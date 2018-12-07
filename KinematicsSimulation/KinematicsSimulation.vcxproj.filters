@@ -42,6 +42,12 @@
     <ClInclude Include="tracker.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="kinematics_lib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="result_IO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="basebox.cpp">
@@ -59,5 +65,11 @@
     <ClCompile Include="physics_sence.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="result_IO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

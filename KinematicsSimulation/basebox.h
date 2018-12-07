@@ -22,31 +22,17 @@ protected:
 	vec3D size_;
 
 public:
-	vec3D position() const
-	{
-		return position_;
-	}
+	vec3D position() const;
 
-	vec3D size() const
-	{
-		return size_;
-	}
+	vec3D size() const;
 
 
-	friend bool operator==(const basebox& lhs, const basebox& rhs)
-	{
-		return &lhs == &rhs;
-	}
+	friend bool operator==(const basebox& lhs, const basebox& rhs);
 
 	friend bool operator!=(const basebox& lhs, const basebox& rhs);
 
 
-	friend std::size_t hash_value(const basebox& obj)
-	{
-		std::size_t seed = 0x3D92BBB2;
-		seed ^= (seed << 6) + (seed >> 2) + 0x01857D20 + stdext::hash_value(&obj);
-		return seed;
-	}
+	friend std::size_t hash_value(const basebox& obj);
 
 	friend std::ostream& operator<<(std::ostream& os, const basebox& obj);
 };

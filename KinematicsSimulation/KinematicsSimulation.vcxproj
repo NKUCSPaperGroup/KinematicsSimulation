@@ -22,8 +22,10 @@
     <ClInclude Include="basebox.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="force.h" />
+    <ClInclude Include="kinematics_lib.h" />
     <ClInclude Include="massbody.h" />
     <ClInclude Include="masscenter.h" />
+    <ClInclude Include="result_IO.h" />
     <ClInclude Include="tracker.h" />
     <ClInclude Include="octree.h" />
     <ClInclude Include="physics_sence.h" />
@@ -34,7 +36,11 @@
     <ClCompile Include="force.cpp" />
     <ClCompile Include="masscenter.cpp" />
     <ClCompile Include="physics_sence.cpp" />
+    <ClCompile Include="result_IO.cpp" />
     <ClCompile Include="vec3D.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -57,7 +63,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -102,6 +108,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

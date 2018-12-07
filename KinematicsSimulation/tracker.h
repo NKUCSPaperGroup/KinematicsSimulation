@@ -1,5 +1,4 @@
 #pragma once
-#include "masscenter.h"
 
 template <typename Target, typename Save>
 class tracker
