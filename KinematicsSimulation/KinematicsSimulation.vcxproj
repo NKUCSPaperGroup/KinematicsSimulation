@@ -39,6 +39,9 @@
     <ClCompile Include="result_IO.cpp" />
     <ClCompile Include="vec3D.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{4519D261-9452-4F99-BA50-3D8648981012}</ProjectGuid>

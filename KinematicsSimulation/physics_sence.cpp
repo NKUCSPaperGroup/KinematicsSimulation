@@ -107,8 +107,8 @@ void physics_sence::frame::update_internal_force()
 		{
 			if (*pm1 != *pm2)
 			{
-				pm1->add_electrostatic_force_to(*pm2, pm1->q());
-				pm1->add_gravity_to(*pm2, pm1->mass());
+				masscenter::add_electrostatic_force_to(*pm2, pm1->q(),pm1->position());
+				masscenter::add_gravity_to(*pm2, pm1->mass(),pm1->position());
 			}
 		}
 	}
@@ -116,7 +116,7 @@ void physics_sence::frame::update_internal_force()
 
 physics_sence::frame::collide_reaction::
 collide_reaction(const pm masscenter, const vec3D& fv, const double action_time)
-: masscenter(masscenter),f(std::make_shared<force>(collide, fv)),action_time(action_time)
+	: masscenter(masscenter), f(std::make_shared<force>(collide, fv)), action_time(action_time)
 {
 }
 
@@ -170,12 +170,29 @@ bool physics_sence::frame::isnot_this_colliding_added(const std::pair<pm, pm>& p
 	return true;
 }
 
+vec3D calc_collide_force(const std::pair<std::shared_ptr<masscenter>, std::shared_ptr<masscenter>>& pair, double dt)
+{
+	const auto e = pair.first->e() * pair.second->e();
+	const auto rr = pair.second->position() - pair.first->position();
+	const auto v1_r =
+		-(rr.unit() * pair.second->velosity())
+		* ((1 + e) / 2)
+		+ (rr.unit() * pair.first->velosity())
+		* (e * pair.second->mass() - pair.first->mass()) / (2 * pair.first->mass());
+	return
+		rr.unit()
+		* (
+			(v1_r - rr.unit() * pair.first->velosity())
+			* pair.first->mass()
+			/ dt
+		);
+}
+
 void physics_sence::frame::build_new_colliding(const std::pair<pm, pm> pair) const
 {
-	//TODO fv should be calc
-	vec3D fv;//pair.first to pair.second
+	const auto fv = calc_collide_force(pair, scene_.setting().reaction_time);
 	const auto reaction_time = this->scene_.setting().reaction_time;
-	this->colliding_->insert({ pair.first->name(),collide_reaction{pair.second,fv,reaction_time} });
+	this->colliding_->insert({pair.first->name(), collide_reaction{pair.second, fv, reaction_time}});
 }
 
 void physics_sence::frame::update_objs()
