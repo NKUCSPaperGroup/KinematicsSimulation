@@ -9,7 +9,9 @@ public:
 	massbody(const vec3D& position, const vec3D& size, const double mass);
 
 	massbody(const basebox& box, const double mass);
-
+	/*
+	 * the mass of the body
+	 */
 	double mass() const;
 
 	friend bool operator==(const massbody& lhs, const massbody& rhs);
@@ -31,7 +33,9 @@ inline massbody::massbody(const basebox& box, const double mass): basebox(box),
                                                                   mass_(mass)
 {
 }
-
+/*
+ * return the mass of the body
+ */
 inline double massbody::mass() const
 {
 	return mass_;
