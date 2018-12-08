@@ -28,19 +28,16 @@
     <ClInclude Include="result_IO.h" />
     <ClInclude Include="tracker.h" />
     <ClInclude Include="octree.h" />
-    <ClInclude Include="physics_sence.h" />
+    <ClInclude Include="physics_scene.h" />
     <ClInclude Include="vec3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="basebox.cpp" />
     <ClCompile Include="force.cpp" />
     <ClCompile Include="masscenter.cpp" />
-    <ClCompile Include="physics_sence.cpp" />
+    <ClCompile Include="physics_scene.cpp" />
     <ClCompile Include="result_IO.cpp" />
     <ClCompile Include="vec3D.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -63,7 +60,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -109,6 +106,9 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>kinematics_lib.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

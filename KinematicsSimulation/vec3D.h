@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #pragma once
 #include <cstddef>
 #include <ostream>
@@ -5,7 +12,7 @@
 class vec3D
 {
 public:
-	vec3D(): vec3D(0, 0, 0)
+	vec3D() : vec3D(0, 0, 0)
 	{
 	}
 	/*
@@ -69,11 +76,10 @@ public:
 
 	friend vec3D operator-(const vec3D& a, const vec3D& b);
 
-
 	/**
 	 * \brief dot product
-	 * \param a 
-	 * \param b 
+	 * \param a
+	 * \param b
 	 * \return a*b
 	 */
 	friend double operator*(const vec3D& a, const vec3D& b);
@@ -82,19 +88,18 @@ public:
 
 	friend vec3D operator/(const vec3D& a, double b);
 
-
 	/**
 	 * \brief cross product
-	 * \param b 
-	 * \return 
+	 * \param b
+	 * \return
 	 */
 	vec3D cross(const vec3D& b) const;
 
 	/**
 	 * \brief cross product
-	 * \param a 
-	 * \param b 
-	 * \return 
+	 * \param a
+	 * \param b
+	 * \return
 	 */
 	static vec3D cross(const vec3D& a, const vec3D& b);
 

@@ -36,9 +36,6 @@
     <ClInclude Include="octree.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="physics_sence.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="tracker.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -46,6 +43,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="result_IO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_scene.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,14 +62,11 @@
     <ClCompile Include="masscenter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="physics_sence.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="result_IO.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <ClCompile Include="physics_scene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

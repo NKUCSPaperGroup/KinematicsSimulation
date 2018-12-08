@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #pragma once
 #include <list>
 #include <memory>
@@ -5,9 +12,10 @@
 #include "basebox.h"
 #include <algorithm>
 #include <future>
+#include <utility>
 
-const vec3D inti_size;
-const vec3D inti_pos = {0, 0, 0};
+const vec3D inti_size = { 256, 256, 256 };
+const vec3D inti_pos = { 0, 0, 0 };
 const size_t split_size = 10;
 
 //The ptr to obj of basebox
@@ -46,7 +54,7 @@ protected:
 		node();
 
 		node(location location, pn super,
-		     std::list<E> objs);
+			std::list<E> objs);
 
 		void add(E);
 		bool remove(std::string);
@@ -105,7 +113,7 @@ private:
 };
 
 template <typename E>
-octree<E>::octree(): root_(std::make_shared<node>())
+octree<E>::octree() : root_(std::make_shared<node>())
 {
 	root_->split(root_);
 }
@@ -172,14 +180,14 @@ typename octree<E>::collide_result octree<E>::test_collide() const
 template <typename E>
 octree<E>::node::node()
 	: basebox(inti_pos, inti_size)
-	  , location_(PPP), super_(nullptr), depth_(0), objs_()
+	, location_(PPP), super_(nullptr), depth_(0), objs_()
 {
 }
 
 template <typename E>
 octree<E>::node::node(const location location, pn super, std::list<E> objs)
 	: basebox(calc_position(super, location), calc_size(super, location))
-	  , location_(location), super_(super), depth_(super->depth_ + 1), objs_(objs)
+	, location_(location), super_(super), depth_(super->depth_ + 1), objs_(std::move(objs))
 {
 }
 
@@ -202,8 +210,10 @@ void octree<E>::node::add(E obj)
 		break;
 	case AXIS:
 		this->objs_.push_back(obj);
+		break;
 	default:
 		this->subs_[lo]->add(obj);
+		break;
 	}
 }
 
@@ -239,13 +249,7 @@ void octree<E>::node::clear()
 template <typename E>
 typename octree<E>::collide_result octree<E>::node::test_collide() const
 {
-	if (this->subs_.empty())
-	{
-		auto re = create_empty_result();
-		merge_result(re, this->self_test_collide());
-		merge_result(re, this->forward_test_collide());
-		return re;
-	}
+	auto re = create_empty_result();
 	if (this->super_ == nullptr)
 	{
 		std::list<std::future<collide_result>> tasks;
@@ -253,7 +257,7 @@ typename octree<E>::collide_result octree<E>::node::test_collide() const
 		{
 			tasks.push_back(std::async([&]()-> collide_result { return sub->test_collide(); }));
 		}
-		auto re = create_empty_result();
+		merge_result(re, this->self_test_collide());
 		for (std::future<collide_result>& task : tasks)
 		{
 			merge_result(re, task.get());
@@ -262,11 +266,12 @@ typename octree<E>::collide_result octree<E>::node::test_collide() const
 	}
 	else
 	{
-		auto re = create_empty_result();
 		for (const pn& p : this->subs_)
 		{
 			merge_result(re, p->test_collide());
 		}
+		merge_result(re, this->self_test_collide());
+		merge_result(re, this->forward_test_collide());
 		return re;
 	}
 }
@@ -285,21 +290,21 @@ vec3D octree<E>::node::calc_position(pn super, const location subs)
 {
 	return vec3D{
 		subs & 4
-			? super->position().x() - super->size().x() / 2
-			: super->position().x() + super->size().x() / 2,
+			? super->position().x() - super->size().x() / 4
+			: super->position().x() + super->size().x() / 4,
 		subs & 2
-			? super->position().y() - super->size().y() / 2
-			: super->position().y() + super->size().y() / 2,
+			? super->position().y() - super->size().y() / 4
+			: super->position().y() + super->size().y() / 4,
 		subs & 1
-			? super->position().z() - super->size().z() / 2
-			: super->position().z() + super->size().z() / 2,
+			? super->position().z() - super->size().z() / 4
+			: super->position().z() + super->size().z() / 4,
 	};
 }
 
 template <typename E>
 vec3D octree<E>::node::calc_size(pn super, location subs)
 {
-	return vec3D{super->size().x() / 2, super->size().y() / 2, super->size().z() / 2};
+	return vec3D{ super->size().x() / 2, super->size().y() / 2, super->size().z() / 2 };
 }
 
 template <typename E>
@@ -347,7 +352,7 @@ typename octree<E>::collide_result octree<E>::node::self_test_collide() const
 		{
 			if (e1 != e2)
 			{
-				if (BOXC(e1,e2))
+				if (BOXC(e1, e2))
 				{
 					add_to_result(rep, e1, e2, false);
 				}

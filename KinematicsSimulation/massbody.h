@@ -1,10 +1,16 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #pragma once
 #include "basebox.h"
 
 class massbody : public basebox
 {
 public:
-
 
 	massbody(const vec3D& position, const vec3D& size, const double mass);
 
@@ -24,13 +30,13 @@ protected:
 	double mass_;
 };
 
-inline massbody::massbody(const vec3D& position, const vec3D& size, const double mass): basebox(position, size),
-                                                                                        mass_(mass)
+inline massbody::massbody(const vec3D& position, const vec3D& size, const double mass) : basebox(position, size),
+mass_(mass)
 {
 }
 
-inline massbody::massbody(const basebox& box, const double mass): basebox(box),
-                                                                  mass_(mass)
+inline massbody::massbody(const basebox& box, const double mass) : basebox(box),
+mass_(mass)
 {
 }
 /*

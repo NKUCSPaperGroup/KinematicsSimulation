@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #pragma once
 #include "massbody.h"
 #include <string>
@@ -7,12 +14,10 @@
 class masscenter : public massbody
 {
 public:
-
 	masscenter(const std::string name, const vec3D& position, const vec3D& size, const vec3D& velosity, double mass,
-	           double q,
-	           double e
+		double q,
+		double e
 	);
-
 
 	masscenter(const std::string name, const basebox& box, const vec3D& velosity, double mass, double q, double e
 	);
@@ -27,10 +32,9 @@ public:
 
 	void add_force(force&);
 
-	static void add_gravity_to(masscenter& obj, double other_mass,const vec3D&);
+	static void add_gravity_to(masscenter& obj, double other_mass, const vec3D&);
 
-	static void add_electrostatic_force_to(masscenter& obj, double other_q,const vec3D&);
-
+	static void add_electrostatic_force_to(masscenter& obj, double other_q, const vec3D&);
 
 	std::list<force> forces() const;
 
@@ -40,7 +44,7 @@ private:
 	double q_;
 	double e_;
 	std::string name_;
-	vec3D velosity_;
+	vec3D velocity_;
 	vec3D acceleration_;
 	std::list<force> forces_;
 
@@ -51,7 +55,11 @@ public:
 
 	std::string name() const;
 
-	vec3D velosity() const;
+	vec3D velocity() const;
+
+	void set_velocity(const vec3D& v) { this->velocity_ = v; }
+
+	void set_position(const vec3D& p) { this->position_ = p; }
 
 	friend bool operator==(const masscenter& lhs, const masscenter& rhs);
 
@@ -66,7 +74,6 @@ public:
 
 		vec3D position;
 		vec3D v;
-		std::list<force> foces;
+		std::list<force> forces;
 	};
 };
-

@@ -1,11 +1,22 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #include "result_IO.h"
-#include "physics_sence.h"
+#include "physics_scene.h"
 #include <ostream>
 #include "vec3D.h"
+#include <cmath>
+#include <complex>
 
 inline std::ostream& write_3d_date(std::ostream& os, const vec3D& v)
 {
-	os << v.x() << '\t' << v.y() << '\t' << v.z() << '\t';
+	os << (std::abs(v.x()) > 1e-8 ? v.x() : 0) << '\t';
+	os << (std::abs(v.y()) > 1e-8 ? v.y() : 0) << '\t';
+	os << (std::abs(v.z()) > 1e-8 ? v.z() : 0);
 	return os;
 }
 
@@ -18,7 +29,7 @@ inline double next_double(const std::string& s, int& p1, int& p2)
 	return d;
 }
 
-void write_result(std::ostream& os, std::pair<physics_sence::time_squence, physics_sence::result> r)
+void write_result(std::ostream& os, std::pair<physics_scene::time_sequence, physics_scene::result> r)
 {
 	for (size_t i = 0; i < r.first.size(); ++i)
 	{
@@ -31,9 +42,9 @@ void write_result(std::ostream& os, std::pair<physics_sence::time_squence, physi
 	}
 }
 
-void write_result(std::ostream& os, std::tuple<physics_sence::time_squence, std::vector<vec3D>, std::vector<vec3D>> r)
+void write_result(std::ostream& os, std::tuple<physics_scene::time_sequence, std::vector<vec3D>, std::vector<vec3D>> r)
 {
-	physics_sence::time_squence ts{};
+	physics_scene::time_sequence ts{};
 	std::vector<vec3D> ps{};
 	std::vector<vec3D> vs{};
 	std::tie(ts, ps, vs) = r;
@@ -48,9 +59,9 @@ void write_result(std::ostream& os, std::tuple<physics_sence::time_squence, std:
 	}
 }
 
-std::tuple<physics_sence::time_squence, std::vector<vec3D>, std::vector<vec3D>> read_result(std::istream& is)
+std::tuple<physics_scene::time_sequence, std::vector<vec3D>, std::vector<vec3D>> read_result(std::istream& is)
 {
-	physics_sence::time_squence ts{};
+	physics_scene::time_sequence ts{};
 	std::vector<vec3D> ps{};
 	std::vector<vec3D> vs{};
 	while (!is.eof())
@@ -60,9 +71,9 @@ std::tuple<physics_sence::time_squence, std::vector<vec3D>, std::vector<vec3D>> 
 		std::getline(is, s);
 #define D next_double(s,p1,p2)
 		ts.push_back(D);
-		ps.emplace_back(D,D,D);
-		vs.emplace_back(D,D,D);
+		ps.emplace_back(D, D, D);
+		vs.emplace_back(D, D, D);
 #undef D
 	}
-	return {ts, ps, vs};
+	return { ts, ps, vs };
 }
