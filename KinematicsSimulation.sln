@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KinematicsSimulation", "KinematicsSimulation\KinematicsSimulation.vcxproj", "{4519D261-9452-4F99-BA50-3D8648981012}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4519D261-9452-4F99-BA50-3D8648981012} = {4519D261-9452-4F99-BA50-3D8648981012}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +26,14 @@ Global
 		{4519D261-9452-4F99-BA50-3D8648981012}.Release|x64.Build.0 = Release|x64
 		{4519D261-9452-4F99-BA50-3D8648981012}.Release|x86.ActiveCfg = Release|Win32
 		{4519D261-9452-4F99-BA50-3D8648981012}.Release|x86.Build.0 = Release|Win32
+		{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}.Debug|x64.ActiveCfg = Debug|x64
+		{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}.Debug|x64.Build.0 = Debug|x64
+		{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}.Debug|x86.ActiveCfg = Debug|Win32
+		{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}.Debug|x86.Build.0 = Debug|Win32
+		{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}.Release|x64.ActiveCfg = Release|x64
+		{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}.Release|x64.Build.0 = Release|x64
+		{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}.Release|x86.ActiveCfg = Release|Win32
+		{07A1F715-9B52-4FD7-BE7F-367B7490B0D8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

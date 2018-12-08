@@ -1,10 +1,17 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #pragma once
 #include "vec3D.h"
 #include <ostream>
 
-/**
- * \brief the type of f
- */
+ /**
+  * \brief the type of f
+  */
 enum force_type
 {
 	gravity,
@@ -30,7 +37,6 @@ public:
 	{
 		return type_;
 	}
-
 
 	friend bool operator==(const force& lhs, const force& rhs);
 

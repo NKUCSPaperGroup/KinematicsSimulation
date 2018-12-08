@@ -1,7 +1,13 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #pragma once
 #include "vec3D.h"
 #include <ostream>
-#include <tuple>
 #include <xhash>
 
 class basebox
@@ -11,7 +17,7 @@ public:
 	virtual ~basebox() = default;
 	/**
 	 * \brief test whether this box is colliding with another one.
-	 * \param box the other one 
+	 * \param box the other one
 	 * \return colliding=>true , not=>false
 	 */
 	virtual bool is_box_collide(const basebox& box) const;
@@ -26,11 +32,9 @@ public:
 
 	vec3D size() const;
 
-
 	friend bool operator==(const basebox& lhs, const basebox& rhs);
 
 	friend bool operator!=(const basebox& lhs, const basebox& rhs);
-
 
 	friend std::size_t hash_value(const basebox& obj);
 

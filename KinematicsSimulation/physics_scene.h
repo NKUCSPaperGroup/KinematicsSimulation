@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #pragma once
 #include "field.h"
 #include <map>
@@ -62,7 +69,6 @@ private:
 		void update_extra_force();
 
 		void update_internal_force();
-
 
 		void update_objs();
 

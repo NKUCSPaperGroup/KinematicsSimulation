@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #include "vec3D.h"
 
 vec3D::vec3D(const double x, const double y, const double z) : x_(x), y_(y), z_(z)
@@ -15,7 +22,7 @@ double vec3D::length() const
 
 vec3D vec3D::copy() const
 {
-	return vec3D{this->x(), this->y(), this->z()};
+	return vec3D{ this->x(), this->y(), this->z() };
 }
 
 vec3D vec3D::unit() const
@@ -82,7 +89,7 @@ double operator*(const vec3D& a, const vec3D& b)
 
 vec3D operator*(const vec3D& a, double b)
 {
-	return vec3D{b * (a.x_), b * (a.y_), b * (a.z_)};
+	return vec3D{ b * (a.x_), b * (a.y_), b * (a.z_) };
 }
 
 vec3D operator/(const vec3D& a, double b)

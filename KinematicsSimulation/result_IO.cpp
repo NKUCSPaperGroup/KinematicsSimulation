@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #include "result_IO.h"
 #include "physics_scene.h"
 #include <ostream>
@@ -64,9 +71,9 @@ std::tuple<physics_scene::time_sequence, std::vector<vec3D>, std::vector<vec3D>>
 		std::getline(is, s);
 #define D next_double(s,p1,p2)
 		ts.push_back(D);
-		ps.emplace_back(D,D,D);
-		vs.emplace_back(D,D,D);
+		ps.emplace_back(D, D, D);
+		vs.emplace_back(D, D, D);
 #undef D
 	}
-	return {ts, ps, vs};
+	return { ts, ps, vs };
 }

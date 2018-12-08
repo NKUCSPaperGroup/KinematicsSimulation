@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="basebox">
+    <Position X="8" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAIAAIQBAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>basebox.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="field">
+    <Position X="11" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAACAAAAAADAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>field.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="force" Collapsed="true">
+    <Position X="11.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAACAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>force.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="massbody">
+    <Position X="5" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAQAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>massbody.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="masscenter">
+    <Position X="1" Y="1.25" Width="2.75" />
+    <Members>
+      <Method Name="add_electrostatic_force_to" Hidden="true" />
+      <Method Name="add_gravity_to" Hidden="true" />
+      <Method Name="calculate_acceleration" Hidden="true" />
+      <Method Name="merge" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="masscenter::save_type">
+        <TypeIdentifier>
+          <NewMemberFileName>masscenter.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAkAAAAAgAQAAACACAAAAEAEAEAEAIACACEgAAAEIAA=</HashCode>
+      <FileName>masscenter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="tracker&lt;Target, Save&gt;">
+    <Position X="22.75" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAIAAAAAAABAAAAAAEAAAAAAAgAAAAAIAFgA=</HashCode>
+      <FileName>tracker.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="octree&lt;E&gt;">
+    <Position X="14.25" Y="1.75" Width="2.5" />
+    <Members>
+      <Field Name="root_" Hidden="true" />
+      <Field Name="size_" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="octree&lt;E&gt;::node" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>octree.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Enum Name="octree&lt;E&gt;::location" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>octree.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gEAAAEAAAAAAAAAEAIAAAABAAAAAABAAAAAAAAACQAA=</HashCode>
+      <FileName>octree.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="physics_sence">
+    <Position X="17.5" Y="1.5" Width="4" />
+    <Members>
+      <Field Name="fields_" Hidden="true" />
+      <Field Name="inti_" Hidden="true" />
+      <Method Name="next_frame" Hidden="true" />
+      <Field Name="objs_" Hidden="true" />
+      <Field Name="present_" Hidden="true" />
+      <Field Name="result_" Hidden="true" />
+      <Method Name="run_inti" Hidden="true" />
+      <Field Name="setting_" Hidden="true" />
+      <Method Name="time_to_save" Hidden="true" />
+      <Field Name="treed_objs_" Hidden="true" />
+      <Method Name="update_time_squence" Hidden="true" />
+      <Method Name="update_track" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="physics_sence::frame">
+        <Members>
+          <Method Name="add_new_colliding" Hidden="true" />
+          <Method Name="build_new_colliding" Hidden="true" />
+          <Method Name="build_next_frame" Hidden="true" />
+          <Method Name="clear_force" Hidden="true" />
+          <Field Name="colliding_" Hidden="true" />
+          <Method Name="colliding_attach" Hidden="true" />
+          <Method Name="isnot_this_colliding_added" Hidden="true" />
+          <Field Name="objs_" Hidden="true" />
+          <Method Name="remove_overtime_colliding" Hidden="true" />
+          <Field Name="scene_" Hidden="true" />
+          <Field Name="time_" Hidden="true" />
+          <Method Name="update_collide_force" Hidden="true" />
+          <Method Name="update_extra_force" Hidden="true" />
+          <Method Name="update_internal_force" Hidden="true" />
+          <Method Name="update_objs" Hidden="true" />
+        </Members>
+        <NestedTypes>
+          <Struct Name="physics_sence::frame::collide_reaction" Collapsed="true">
+            <TypeIdentifier>
+              <NewMemberFileName>physics_sence.h</NewMemberFileName>
+            </TypeIdentifier>
+          </Struct>
+        </NestedTypes>
+        <TypeIdentifier>
+          <NewMemberFileName>physics_sence.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Struct Name="physics_sence::run_setting">
+        <TypeIdentifier>
+          <NewMemberFileName>physics_sence.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AFAIAgAAAAEAAAAkAAAoAAgAAAAEgAAQgFAAACACAAQ=</HashCode>
+      <FileName>physics_sence.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="vec3D" Collapsed="true">
+    <Position X="11.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAgAAAAAEAAgQYAAAAAAIIAAABgAQAAAAA=</HashCode>
+      <FileName>vec3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="force_type" Collapsed="true">
+    <Position X="12.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAEAAAAAAAAAIAAAAAEAAAACIAAAAAAAAA=</HashCode>
+      <FileName>force.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

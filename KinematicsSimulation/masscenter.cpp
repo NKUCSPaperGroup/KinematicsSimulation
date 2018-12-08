@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #include "masscenter.h"
 
 bool operator==(const masscenter& lhs, const masscenter& rhs)
@@ -18,19 +25,19 @@ std::size_t hash_value(const masscenter& obj)
 }
 
 masscenter::masscenter(const std::string name, const vec3D& position, const vec3D& size, const vec3D& velosity,
-                       const double mass,
-                       const double q, const double e)
+	const double mass,
+	const double q, const double e)
 	: massbody(position, size, mass), q_(q), e_(e), name_(name), velocity_(velosity)
 {
 }
 
 masscenter::masscenter(const std::string name, const basebox& box, const vec3D& velosity, const double mass,
-                       const double q, const double e)
+	const double q, const double e)
 	: massbody(box, mass), q_(q), e_(e), name_(name), velocity_(velosity)
 {
 }
 
-masscenter::masscenter(const std::string name, const basebox& box, const double mass): masscenter(
+masscenter::masscenter(const std::string name, const basebox& box, const double mass) : masscenter(
 	name, box, vec3D{}, mass, 0,
 	1)
 {
@@ -58,7 +65,7 @@ masscenter masscenter::merge(const std::vector<masscenter>& ms, const std::vecto
 	p /= sum;
 	v /= sum;
 	a /= sum;
-	auto re = masscenter{ms[0].name_, p, ms[0].size_, v, ms[0].mass_, ms[0].q_, ms[0].e_};
+	auto re = masscenter{ ms[0].name_, p, ms[0].size_, v, ms[0].mass_, ms[0].q_, ms[0].e_ };
 	re.acceleration_ = a;
 	return re;
 }
@@ -83,7 +90,7 @@ vec3D masscenter::velocity() const
 	return velocity_;
 }
 
-masscenter::save_type::save_type(const masscenter& o): position(o.position()), v(o.velocity()), forces(o.forces())
+masscenter::save_type::save_type(const masscenter& o) : position(o.position()), v(o.velocity()), forces(o.forces())
 {
 }
 
@@ -126,7 +133,7 @@ void masscenter::add_gravity_to(masscenter& obj, const double other_mass, const 
 		rr.unit()
 		* (G * (obj.mass() * other_mass))
 		/ (rr.length() * rr.length());
-	force f{gravity, fv};
+	force f{ gravity, fv };
 	obj.add_force(f);
 }
 
@@ -142,6 +149,6 @@ void masscenter::add_electrostatic_force_to(masscenter& obj, const double other_
 		rr.unit()
 		* (K * (-obj.q() * other_q))
 		/ (rr.length() * rr.length());
-	force f{electro_static, fv};
+	force f{ electro_static, fv };
 	obj.add_force(f);
 }

@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #include "physics_scene.h"
 #include <future>
 
@@ -11,7 +18,7 @@ void physics_scene::add_mass_center(const masscenter& o, const bool b)
 		auto ps = std::make_shared<tracker<masscenter, masscenter::save_type>>();
 		ps->bind(*p);
 		ps->trace();
-		this->result_.second.insert({p->name(), ps});
+		this->result_.second.insert({ p->name(), ps });
 	}
 }
 
@@ -43,7 +50,7 @@ physics_scene::result_map physics_scene::get_result_map() const
 
 std::pair<physics_scene::time_sequence, physics_scene::result> physics_scene::get_result(const std::string& name) const
 {
-	return {result_.first, result_.second.at(name)};
+	return { result_.first, result_.second.at(name) };
 }
 
 void physics_scene::frame::run()
@@ -116,7 +123,8 @@ void physics_scene::frame::update_internal_force()
 
 physics_scene::frame::collide_reaction::
 collide_reaction(const pm masscenter, const vec3D& fv, const int action_time, const int frozen_times)
-	: masscenter(masscenter), f(std::make_shared<force>(collide, fv)), action_times(action_time),frozen_times(frozen_times)
+	: masscenter(masscenter), f(std::make_shared<force>(collide, fv)), action_times(action_time),
+	frozen_times(frozen_times)
 {
 }
 
@@ -190,7 +198,7 @@ vec3D calc_collide_force(const std::pair<std::shared_ptr<masscenter>, std::share
 	const auto m2 = pair.second->mass();
 	const auto v1_r = (m1 * u1 + m2 * u2) / (m1 + m2) - m2 * e * (u1 - u2) / (m1 + m2);
 
-	return rr * ((v1_r - u1) * m1 / - dt);
+	return rr * ((v1_r - u1) * m1 / -dt);
 }
 
 void physics_scene::frame::build_new_colliding(const std::pair<pm, pm> pair) const
@@ -198,7 +206,9 @@ void physics_scene::frame::build_new_colliding(const std::pair<pm, pm> pair) con
 	const auto dd = int(ceil(scene_.setting().reaction_time / scene_.setting().delta_time));
 	const auto reaction_time = dd * scene_.setting().delta_time;
 	const auto fv = calc_collide_force(pair, reaction_time);
-	this->colliding_->insert({pair.first->name(), collide_reaction{pair.second, fv, dd,scene_.setting().frozen_times}});
+	this->colliding_->insert({
+		pair.first->name(), collide_reaction{pair.second, fv, dd, scene_.setting().frozen_times}
+		});
 }
 
 void physics_scene::frame::update_objs()

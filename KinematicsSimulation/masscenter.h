@@ -1,3 +1,10 @@
+/**************************************************************
+ *  Copyright: Copyright (c) 2018
+ *  Created on 2018-12
+ *  Author: NKUCSPaperGroup
+ *  At: https://github.com/NKUCSPaperGroup
+ *  Email: hamiguazzz@qq.com
+ **************************************************************/
 #pragma once
 #include "massbody.h"
 #include <string>
@@ -8,10 +15,9 @@ class masscenter : public massbody
 {
 public:
 	masscenter(const std::string name, const vec3D& position, const vec3D& size, const vec3D& velosity, double mass,
-	           double q,
-	           double e
+		double q,
+		double e
 	);
-
 
 	masscenter(const std::string name, const basebox& box, const vec3D& velosity, double mass, double q, double e
 	);
@@ -29,7 +35,6 @@ public:
 	static void add_gravity_to(masscenter& obj, double other_mass, const vec3D&);
 
 	static void add_electrostatic_force_to(masscenter& obj, double other_q, const vec3D&);
-
 
 	std::list<force> forces() const;
 
