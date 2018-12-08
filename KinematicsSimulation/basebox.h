@@ -18,7 +18,7 @@ public:
 protected:
 	//position_ is the position of center
 	vec3D position_;
-	//size_ = {length,width,heigth}
+	//size_ = {length,width,height}
 	vec3D size_;
 
 public:

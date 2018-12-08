@@ -5,8 +5,9 @@
 #include "basebox.h"
 #include <algorithm>
 #include <future>
+#include <utility>
 
-const vec3D inti_size;
+const vec3D inti_size = {256, 256, 256};
 const vec3D inti_pos = {0, 0, 0};
 const size_t split_size = 10;
 
@@ -179,7 +180,7 @@ octree<E>::node::node()
 template <typename E>
 octree<E>::node::node(const location location, pn super, std::list<E> objs)
 	: basebox(calc_position(super, location), calc_size(super, location))
-	  , location_(location), super_(super), depth_(super->depth_ + 1), objs_(objs)
+	  , location_(location), super_(super), depth_(super->depth_ + 1), objs_(std::move(objs))
 {
 }
 
@@ -202,8 +203,10 @@ void octree<E>::node::add(E obj)
 		break;
 	case AXIS:
 		this->objs_.push_back(obj);
+		break;
 	default:
 		this->subs_[lo]->add(obj);
+		break;
 	}
 }
 
@@ -239,13 +242,7 @@ void octree<E>::node::clear()
 template <typename E>
 typename octree<E>::collide_result octree<E>::node::test_collide() const
 {
-	if (this->subs_.empty())
-	{
-		auto re = create_empty_result();
-		merge_result(re, this->self_test_collide());
-		merge_result(re, this->forward_test_collide());
-		return re;
-	}
+	auto re = create_empty_result();
 	if (this->super_ == nullptr)
 	{
 		std::list<std::future<collide_result>> tasks;
@@ -253,7 +250,7 @@ typename octree<E>::collide_result octree<E>::node::test_collide() const
 		{
 			tasks.push_back(std::async([&]()-> collide_result { return sub->test_collide(); }));
 		}
-		auto re = create_empty_result();
+		merge_result(re, this->self_test_collide());
 		for (std::future<collide_result>& task : tasks)
 		{
 			merge_result(re, task.get());
@@ -262,11 +259,12 @@ typename octree<E>::collide_result octree<E>::node::test_collide() const
 	}
 	else
 	{
-		auto re = create_empty_result();
 		for (const pn& p : this->subs_)
 		{
 			merge_result(re, p->test_collide());
 		}
+		merge_result(re, this->self_test_collide());
+		merge_result(re, this->forward_test_collide());
 		return re;
 	}
 }
@@ -285,14 +283,14 @@ vec3D octree<E>::node::calc_position(pn super, const location subs)
 {
 	return vec3D{
 		subs & 4
-			? super->position().x() - super->size().x() / 2
-			: super->position().x() + super->size().x() / 2,
+			? super->position().x() - super->size().x() / 4
+			: super->position().x() + super->size().x() / 4,
 		subs & 2
-			? super->position().y() - super->size().y() / 2
-			: super->position().y() + super->size().y() / 2,
+			? super->position().y() - super->size().y() / 4
+			: super->position().y() + super->size().y() / 4,
 		subs & 1
-			? super->position().z() - super->size().z() / 2
-			: super->position().z() + super->size().z() / 2,
+			? super->position().z() - super->size().z() / 4
+			: super->position().z() + super->size().z() / 4,
 	};
 }
 
