@@ -6,7 +6,6 @@
  *  Email: hamiguazzz@qq.com
  **************************************************************/
 #include "result_view.h"
-#include <algorithm>
 
 QLineSeries* QResultWarp::create_series(const QString& name, const std::vector<double>& x, const std::vector<double>& y)
 {
@@ -50,10 +49,20 @@ auto my_max(const std::vector<double>::const_iterator& begin, const std::vector<
 	}
 	return re;
 }
+auto my_min(const std::vector<double>::const_iterator& begin, const std::vector<double>::const_iterator& end)
+{
+	auto r = begin;
+	auto re = begin;
+	for (; r != end; ++r)
+	{
+		if (*r < *re)re = r;
+	}
+	return re;
+}
 
 QValueAxis* QResultWarp::create_axis(const QString& name, const std::vector<double>& v)
 {
-	const auto p1 = std::min(v.begin(), v.end());
+	const auto p1 = my_min(v.begin(), v.end());
 	const auto p2 =my_max(v.begin(), v.end());
 	return create_axis(*p1, *p2, name);
 }
