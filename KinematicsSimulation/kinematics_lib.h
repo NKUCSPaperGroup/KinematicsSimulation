@@ -12,3 +12,4 @@
 #include "field.h"
 #include "physics_scene.h"
 #include "result_IO.h"
+#include "result_view.h"

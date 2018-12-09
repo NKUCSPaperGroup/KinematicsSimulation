@@ -312,7 +312,7 @@ typename octree<E>::location octree<E>::node::test_range(E obj)
 {
 	if (ALL_IN(this, obj))
 	{
-		for (auto i = 0; i < 8; ++i)
+		for (auto i = 0; i < subs_.size(); ++i)
 			if (ALL_IN(subs_[i], obj))
 				return location(i);
 		return AXIS;
