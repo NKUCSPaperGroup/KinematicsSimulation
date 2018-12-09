@@ -48,6 +48,9 @@
     <ClInclude Include="physics_scene.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="result_view.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="basebox.cpp">
@@ -66,6 +69,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="physics_scene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="result_view.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
